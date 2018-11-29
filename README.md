@@ -65,7 +65,7 @@ The easiest way to deploy this starter is to use the same setup, meaning that yo
 5. Go to your content tab
 6. Create new documents for the `Homepage, Hero Links, Projects` type and fill out every input field
 7. Create at least one document for the `Category` type
-8. Create at least one document for the `Post` type. Every _Slice_ needs to be used at least one time! _Note: You could for example create one post with every slice in it._
+8. Create at least one document for the `Post` type. Every _Slice_ needs to be used at least one time and it needs to have one category assigned! _Note: You could for example create one post with every slice and one category in it._
 9. Your project is ready for development and production
 
 ### Custom setup
@@ -167,7 +167,7 @@ The `Post` custom types offers four slices in the slice zone:
 
 **Before running the local development server you'll need to add Content to your Prismic repository!**
 
-Go to your documents (`https://your-name.prismic.io/documents/`) and create content with the newly created types. Fill out the `Homepage`, `Hero Links`, and `Projects` single type. Create some categories and add at least one Post. This post needs to contain all available slices. If you create multiple posts make sure that every slice gets used at least one time.
+Go to your documents (`https://your-name.prismic.io/documents/`) and create content with the newly created types. Fill out the `Homepage`, `Hero Links`, and `Projects` single type. Create some categories and add at least one Post. This post needs to contain all available slices and at least one category. If you create multiple posts make sure that every slice gets used at least one time.
 
 **Please note**: You have to publish all these documents (not only saving them)!
 
@@ -179,7 +179,7 @@ npm run dev
 
 ### Adding new features/plugins
 
-You can add other features by having a look at the offical [plugins page](https://www.gatsbyjs.org/plugins/)
+You can add other features by having a look at the official [plugins page](https://www.gatsbyjs.org/plugins/)
 
 ### Building your site
 
