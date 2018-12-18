@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'react-emotion';
+import styled from '@emotion/styled/macro';
 
 const StyledFooter = styled.footer`
   max-width: ${props => props.theme.maxWidth};

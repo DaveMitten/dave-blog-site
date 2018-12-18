@@ -1,4 +1,4 @@
-import styled from 'react-emotion';
+import styled from '@emotion/styled/macro';
 
 const Wrapper = styled.div`
   max-width: ${props => props.theme.maxWidth};
