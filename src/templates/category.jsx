@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Layout, Listing, Wrapper, Title, SEO, Header } from 'components';
 import website from '../../config/website';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { BodyText, CodeBlock, Image, Quote } from 'slices';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { prism } from 'styles';
 
 const Content = styled.div`
