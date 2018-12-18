@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StaticQuery, graphql } from 'gatsby';
-import { injectGlobal } from 'emotion';
+import { injectGlobal } from 'emotion/macro';
 import { ThemeProvider } from 'emotion-theming';
 import 'typeface-lora';
 import 'typeface-source-sans-pro';

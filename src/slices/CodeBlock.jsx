@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from '@emotion/styled/macro';
 import PropTypes from 'prop-types';
 
 const Content = styled.div`

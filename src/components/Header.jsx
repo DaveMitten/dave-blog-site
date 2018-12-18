@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
-import styled from '@emotion/styled';
+import styled from '@emotion/styled/macro';
 
 const StyledHeader = styled.header`
   padding-bottom: 2rem;
