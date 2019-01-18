@@ -1,16 +1,22 @@
 /* eslint no-unused-expressions: 0 */
+/* eslint react/destructuring-assignment: 0 */
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { StaticQuery, graphql } from 'gatsby';
-import { injectGlobal } from 'emotion/macro';
-import { ThemeProvider } from 'emotion-theming';
-import 'typeface-lora';
-import 'typeface-source-sans-pro';
-import { Footer, SEO } from 'components';
-import { theme, reset } from 'styles';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { StaticQuery, graphql } from 'gatsby'
+import { Global, css } from '@emotion/core'
+import { ThemeProvider } from 'emotion-theming'
+import '@reach/skip-nav/styles.css'
 
-injectGlobal`
+import Footer from './Footer'
+import SEO from './SEO'
+import SkipNavLink from './SkipNavLink'
+import { theme, reset } from '../styles'
+
+import 'typeface-lora'
+import 'typeface-source-sans-pro'
+
+const globalStyle = css`
   ${reset}
   h1, h2, h3, h4, h5, h6 {
     color: ${theme.colors.black};
@@ -33,7 +39,8 @@ injectGlobal`
     text-decoration: none;
     font-weight: 700;
     font-style: italic;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       text-decoration: underline;
     }
   }
@@ -62,19 +69,21 @@ injectGlobal`
       font-size: 0.563rem !important;
     }
   }
-`;
+`
 
-const PureLayout = ({ children, data }) => (
+const PureLayout = ({ children, data, customSEO }) => (
   <ThemeProvider theme={theme}>
     <>
-      <SEO />
+      <Global styles={globalStyle} />
+      <SkipNavLink />
+      {!customSEO && <SEO />}
       {children}
       <Footer>
         <div dangerouslySetInnerHTML={{ __html: data.prismicHomepage.data.footer.html }} />
       </Footer>
     </>
   </ThemeProvider>
-);
+)
 
 class Layout extends Component {
   render() {
@@ -91,15 +100,28 @@ class Layout extends Component {
             }
           }
         `}
-        render={data => <PureLayout {...this.props} data={data} />}
+        render={data => (
+          <PureLayout {...this.props} data={data}>
+            {this.props.children}
+          </PureLayout>
+        )}
       />
-    );
+    )
   }
 }
 
-export default Layout;
+export default Layout
+
+Layout.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.node]).isRequired,
+}
 
 PureLayout.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.node]).isRequired,
   data: PropTypes.object.isRequired,
-};
+  customSEO: PropTypes.bool,
+}
+
+PureLayout.defaultProps = {
+  customSEO: false,
+}

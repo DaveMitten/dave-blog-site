@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import styled from '@emotion/styled/macro';
-import { graphql } from 'gatsby';
-import { Layout, Listing, Wrapper, Title } from 'components';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import styled from '@emotion/styled'
+import { graphql } from 'gatsby'
+import { Layout, Listing, Wrapper, Title } from '../components'
+import website from '../../config/website'
 
 const Hero = styled.header`
   background-color: ${props => props.theme.colors.greyLight};
   display: flex;
   align-items: center;
-`;
+`
 
 const HeroInner = styled(Wrapper)`
   padding-top: 13rem;
@@ -28,7 +29,7 @@ const HeroInner = styled(Wrapper)`
     padding-top: 6rem;
     padding-bottom: 6rem;
   }
-`;
+`
 
 const HeroText = styled.div`
   font-size: 1.7rem;
@@ -40,7 +41,7 @@ const HeroText = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 1.25rem;
   }
-`;
+`
 
 const Social = styled.ul`
   list-style-type: none;
@@ -51,7 +52,7 @@ const Social = styled.ul`
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   li {
     display: inline;
-    &:not(:first-child) {
+    &:not([data-name='social-entry-0']) {
       margin-left: 2.5rem;
       @media (max-width: ${props => props.theme.breakpoints.s}) {
         margin-left: 1.75rem;
@@ -72,7 +73,7 @@ const Social = styled.ul`
       }
     }
   }
-`;
+`
 
 const ProjectListing = styled.ul`
   list-style-type: none;
@@ -89,13 +90,15 @@ const ProjectListing = styled.ul`
       }
     }
   }
-`;
+`
+
+const IndexWrapper = Wrapper.withComponent('main')
 
 class Index extends Component {
   render() {
     const {
       data: { homepage, social, posts, projects },
-    } = this.props;
+    } = this.props
     return (
       <Layout>
         <Hero>
@@ -103,15 +106,15 @@ class Index extends Component {
             <h1>{homepage.data.title.text}</h1>
             <HeroText dangerouslySetInnerHTML={{ __html: homepage.data.content.html }} />
             <Social>
-              {social.edges.map(s => (
-                <li key={s.node.primary.label.text}>
+              {social.edges.map((s, index) => (
+                <li data-name={`social-entry-${index}`} key={s.node.primary.label.text}>
                   <a href={s.node.primary.link.url}>{s.node.primary.label.text}</a>
                 </li>
               ))}
             </Social>
           </HeroInner>
         </Hero>
-        <Wrapper style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
+        <IndexWrapper id={website.skipNavId} style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
           <Title style={{ marginTop: '4rem' }}>Recent posts</Title>
           <Listing posts={posts.edges} />
           <Title style={{ marginTop: '8rem' }}>Recent projects</Title>
@@ -122,19 +125,19 @@ class Index extends Component {
               </li>
             ))}
           </ProjectListing>
-        </Wrapper>
+        </IndexWrapper>
       </Layout>
-    );
+    )
   }
 }
 
-export default Index;
+export default Index
 
 Index.propTypes = {
   data: PropTypes.shape({
     posts: PropTypes.object.isRequired,
   }).isRequired,
-};
+}
 
 export const pageQuery = graphql`
   query IndexQuery {
@@ -199,4 +202,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`;
+`

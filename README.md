@@ -2,9 +2,11 @@
 
 A typography-heavy & light-themed Gatsby Starter which uses the Headless CMS [Prismic](https://prismic.io/).
 
-[Demo Website](https://gatsby-starter-prismic.netlify.com/)
+[Demo Website](https://prismic.lekoarts.de)
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/LekoArts/gatsby-starter-prismic)
+
+[![CircleCI](https://circleci.com/gh/LekoArts/gatsby-starter-prismic.svg?style=svg)](https://circleci.com/gh/LekoArts/gatsby-starter-prismic)
 
 ## About Me
 
@@ -47,7 +49,6 @@ Therefore the starter has following features:
 - Offline Support
 - WebApp Manifest Support
 - Typography.js
-- Absolute modules imports
 - Configurable
   - Use the `website.js` to easily change the most important information
   - Themeable with `theme.js`
@@ -174,7 +175,7 @@ Go to your documents (`https://your-name.prismic.io/documents/`) and create cont
 After that you can run the local server:
 
 ```shell
-npm run dev
+npm run develop
 ```
 
 ### Adding new features/plugins
@@ -195,13 +196,15 @@ You can configure your setup in `config/website`:
 
 ```JS
 module.exports = {
-  _pathPrefix: '/', // Prefix for all links. If you deploy your site to example.com/portfolio your pathPrefix should be "portfolio"
-  _title: 'Gatsby Starter - Prismic.io', // Navigation and Site Title
-  _titleAlt: 'Prismic Starter', // Title for JSONLD
-  description: 'A bright single-page portfolio starter with big typography & images for Gatsby.',
-  _url: 'https://gatsby-starter-prismic.netlify.com', // Domain of your site. No trailing slash!
+  pathPrefix: '/', // Prefix for all links. If you deploy your site to example.com/portfolio your pathPrefix should be "portfolio"
+  title: 'Gatsby Starter - Prismic.io', // Navigation and Site Title
+  titleAlt: 'Gatsby Prismic.io', // Title for JSONLD
+  description: 'A typography-heavy & light-themed Gatsby Starter which uses the Headless CMS Prismic.',
+  headline: 'Writing and publishing content for LekoArts', // Headline for schema.org JSONLD
+  url: 'https://prismic.lekoarts.de', // Domain of your site. No trailing slash!
   siteLanguage: 'en', // Language Tag on <html> element
   logo: '/logos/logo-1024.png', // Used for SEO
+  ogLanguage: 'en_US', // Facebook Language
 
   // JSONLD / Manifest
   favicon: 'src/favicon.png', // Used for manifest favicon generation
@@ -211,7 +214,10 @@ module.exports = {
   backgroundColor: '#EBEDF2',
 
   twitter: '@starter_prismicio', // Twitter Username
-};
+  facebook: 'gatsby-prismic', // Facebook Site Name
+
+  skipNavId: 'reach-skip-nav', // ID for the "Skip to content" a11y feature
+}
 ```
 
 You can also change the colors, container widths and other stuff in `src/styles/theme`:
@@ -229,15 +235,16 @@ const theme = {
     greyDarker: '#1c252b',
   },
   maxWidth: '1000px',
+  maxWidthText: '720px',
   breakpoints: {
     xs: '400px',
     s: '600px',
     m: '900px',
     l: '1200px',
   },
-};
+}
 
-export default theme;
+export default theme
 ```
 
 **Attention:** You also need to edit `static/robots.txt` to include your domain!

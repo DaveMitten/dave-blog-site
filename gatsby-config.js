@@ -1,60 +1,29 @@
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
-});
+})
 
-const { RichText } = require('prismic-reactjs');
+const prismicHtmlSerializer = require('./src/gatsby/htmlSerializer')
 
-// We don't want to import every PrismJS component - so that's why they're required individually
-const Prism = require('prismjs');
-require('prismjs/components/prism-javascript');
-require('prismjs/components/prism-css');
-require('prismjs/components/prism-scss');
-require('prismjs/components/prism-jsx');
-require('prismjs/components/prism-bash');
-require('prismjs/components/prism-json');
-require('prismjs/components/prism-diff');
-require('prismjs/components/prism-markdown');
-require('prismjs/components/prism-graphql');
+const website = require('./config/website')
 
-const { Elements } = RichText;
-
-// Labels with this name will be inline code
-const codeInline = ['text'];
-// Labels with these names will become code blocks
-const codeBlock = ['javascript', 'css', 'scss', 'jsx', 'bash', 'json', 'diff', 'markdown', 'graphql'];
-
-const {
-  _pathPrefix,
-  shortName,
-  description,
-  themeColor,
-  backgroundColor,
-  _title,
-  _titleAlt,
-  _url,
-  author,
-  logo,
-  favicon,
-  siteLanguage,
-  twitter,
-} = require('./config/website');
+const pathPrefix = website.pathPrefix === '/' ? '' : website.pathPrefix
 
 module.exports = {
   /* General Information */
-  pathPrefix: _pathPrefix,
+  pathPrefix: website.pathPrefix,
   siteMetadata: {
-    title: _title,
-    titleAlt: _titleAlt,
-    shortName,
-    author,
-    siteLanguage,
-    logo, // Logo for JSONLD
-    url: _url,
-    siteUrl: _url + _pathPrefix, // For gatsby-plugin-sitemap
-    pathPrefix: _pathPrefix,
-    description,
-    banner: logo,
-    twitter,
+    siteUrl: website.url + pathPrefix, // For gatsby-plugin-sitemap
+    pathPrefix,
+    title: website.title,
+    titleAlt: website.titleAlt,
+    description: website.description,
+    banner: website.logo,
+    headline: website.headline,
+    siteLanguage: website.siteLanguage,
+    ogLanguage: website.ogLanguage,
+    author: website.author,
+    twitter: website.twitter,
+    facebook: website.facebook,
   },
   /* Plugins */
   plugins: [
@@ -65,52 +34,13 @@ module.exports = {
       options: {
         repositoryName: 'gatsby-starter-prismic',
         accessToken: `${process.env.API_KEY}`,
+        // Get the correct URLs in blog posts
         linkResolver: () => post => `/${post.uid}`,
-        htmlSerializer: () => (type, element, content) => {
-          switch (type) {
-            // First differentiate between a label and a preformatted field (e.g. the Code Block slice)
-            case Elements.label: {
-              // Use the inline code for labels that are in the array of "codeInline"
-              if (codeInline.includes(element.data.label)) {
-                return `<code class="language-${element.data.label}">${content}</code>`;
-              }
-              // Use the blockquote for labels with the name "quote"
-              if (element.data.label === 'quote') {
-                return `<blockquote><p>${content}</p></blockquote>`;
-              }
-              // Use the code block for labels that are in the array of "codeBlock"
-              // Choose the right PrismJS highlighting with the label name
-              if (codeBlock.includes(element.data.label)) {
-                return `<pre class="language-${element.data.label}"><code class="language-${
-                  element.data.label
-                }">${Prism.highlight(content, Prism.languages[element.label])}</code></pre>`;
-              }
-              return null;
-            }
-            case Elements.preformatted: {
-              if (codeBlock.includes(element.label)) {
-                return `<pre class="language-${element.label}"><code class="language-${
-                  element.label
-                }">${Prism.highlight(element.text, Prism.languages[element.label])}</code></pre>`;
-              }
-              return null;
-            }
-            default: {
-              return null;
-            }
-          }
-        },
+        // PrismJS highlighting for labels and slices
+        htmlSerializer: () => prismicHtmlSerializer,
       },
     },
     'gatsby-plugin-lodash',
-    // Although this starter doesn't use local files this plugin is necessary for the gatsby-image features of gatsby-source-prismic
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: 'src',
-        path: `${__dirname}/src/`,
-      },
-    },
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     {
@@ -123,18 +53,18 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: _title,
-        short_name: _titleAlt,
-        description,
-        start_url: _pathPrefix,
-        background_color: backgroundColor,
-        theme_color: themeColor,
+        name: website.title,
+        short_name: website.titleAlt,
+        description: website.description,
+        start_url: pathPrefix,
+        background_color: website.backgroundColor,
+        theme_color: website.themeColor,
         display: 'standalone',
-        icon: favicon,
+        icon: website.favicon,
       },
     },
     // Must be placed at the end
     'gatsby-plugin-offline',
     'gatsby-plugin-netlify',
   ],
-};
+}
